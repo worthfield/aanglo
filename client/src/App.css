@@ -1,0 +1,164 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+*{
+  box-sizing: border-box;
+}
+body{
+  font-family: 'Rubik', sans-serif;
+}
+
+
+
+/* Navbar.css */
+
+.navbar {
+  width: 100%;
+  background-color: #f1f1f1;
+  z-index: 1;
+}
+
+.navbar .top {
+  display: block;
+  height: 50px;
+  background-color: #333;
+  color: #fff;
+}
+
+.navbar .middle {
+  display: block;
+  height: 50px;
+  background-color: #f1f1f1;
+  border-bottom: 1px solid #ccc;
+}
+
+.navbar .bottom {
+  display: block;
+  height: 50px;
+  background-color: #333;
+  color: #fff;
+}
+
+.sticky {
+  position: fixed;
+  top: 0;
+  width: 100%;
+}
+
+/* Custom styles for the dots */
+
+
+
+
+.custom-dot.active .dot-circle {
+background-color: red;
+}
+.banner_promotion{
+background-image: url('./assets/images/banner.jpg');
+width: 100%;
+height: 710px;
+background-repeat: no-repeat;
+background-size: cover;
+}
+
+
+
+
+
+
+
+
+
+/* Hide the default scrollbar */
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+.hero {
+  position: relative;
+  width: 100%;
+  height: 400px; /* Adjust the height as needed */
+  /* background-image: url('./assets/images/main_hero.jpg'); */
+}
+.img1{
+
+  background-size: cover;
+  background-position: center;
+  
+}
+.banner-first{
+  /* background-image: url('./assets/images/pexels-tom-swinnen-3194469.jpg'); */
+  height: 200px;
+
+}
+.banner-second{
+  /* background-image: url('./assets/images/pexels-sanket-mishra-16773548.jpg'); */
+ 
+  height: 200px;
+ 
+  
+
+}
+.banner-third{
+  /* background-image: url('./assets/images/pexels-nataliya-vaitkevich-6214362.jpg'); */
+  height: 200px;
+ 
+
+}
+.banner-four{
+  /* background-image: url('./assets/images/pexels-rdne-stock-project-7563565.jpg'); */
+  height: 200px;
+
+
+}
+.hero-content {
+  position: absolute;
+  left:10%;
+  top:50%;
+  text-align: center;
+  color: white;
+}
+
+@media (max-width: 768px) {
+  .hero {
+    height: 300px; /* Adjust the height for smaller screens */
+  }
+  .hero-content{
+    left: 5%;
+  }
+}
+
+.pointed-div {
+ /* Set the height of the div */
+  background-color: #f0f0f0; /* Set the background color */
+  border: 1px solid #ccc; /* Set the border of the div */
+}
+
+.pointed-div::before {
+  content: "";
+  position: absolute;
+  top: -10px; /* Adjust the value to control the height of the pointer */
+  left: 50%; /* Position the pointer horizontally */
+  border-width: 0 8px 10px 8px; /* Create the triangular pointer shape */
+  border-style: solid;
+  border-color: transparent transparent #f0f0f0 transparent; /* Set pointer color and background color of div */
+  transform: translateX(-50%); /* Center the pointer horizontally */
+  z-index: 1; /* Ensure the pointer appears above the div's content */
+}
