@@ -3,7 +3,7 @@ import queryString from "query-string";
 const create = async (params, credentials, product) => {
   try {
     const response = await axios.post(
-      "/api/products/by/" + params.shopId,
+      "https://aanglo.onrender.com/api/products/by/" + params.shopId,
       product,
       {
         headers: {
@@ -19,7 +19,7 @@ const create = async (params, credentials, product) => {
 };
 const listByShop = async (params) => {
   try {
-    const response = await axios.get("/api/products/by/" + params.shopId);
+    const response = await axios.get("https://aanglo.onrender.com/api/products/by/" + params.shopId);
     return response.data;
   } catch (error) {
     throw error;
@@ -27,7 +27,7 @@ const listByShop = async (params) => {
 };
 const listLatest = async () => {
   try {
-    const response = await axios.get("/api/products/latest");
+    const response = await axios.get("https://aanglo.onrender.com/api/products/latest");
     return response.data;
   } catch (error) {
     throw error;
@@ -36,7 +36,7 @@ const listLatest = async () => {
 const listRelated = async (params) => {
   try {
     const response = await axios.get(
-      "/api/products/related/" + params.productId
+      "https://aanglo.onrender.com/api/products/related/" + params.productId
     );
     return response.data;
   } catch (error) {
@@ -45,7 +45,7 @@ const listRelated = async (params) => {
 };
 const read = async (params) => {
   try {
-    const response = await axios.get(`/api/products/${params.productId}`);
+    const response = await axios.get(`https://aanglo.onrender.com/api/products/${params.productId}`);
     return response.data;
   } catch (error) {
     throw error;
@@ -54,7 +54,7 @@ const read = async (params) => {
 const list = async (params) => {
   try {
     const query = queryString.stringify(params);
-    const response = await axios.get(`/api/products?${query}`);
+    const response = await axios.get(`https://aanglo.onrender.com/api/products?${query}`);
     return response.data;
   } catch (error) {
     throw error;
@@ -63,7 +63,7 @@ const list = async (params) => {
 
 const listCategories = async () => {
   try {
-    let response = await axios.get("/api/products/categories");
+    let response = await axios.get("https://aanglo.onrender.com/api/products/categories");
     return response.data;
   } catch (error) {
     throw error;
@@ -72,7 +72,7 @@ const listCategories = async () => {
 
 const allProducts = async () => {
   try {
-    let response = await axios.get("/api/allproducts");
+    let response = await axios.get("https://aanglo.onrender.com/api/allproducts");
     return response.data;
   } catch (error) {
     throw error;

@@ -1,7 +1,7 @@
 import axios from "axios";
 const create = async (params, credentials, shop) => {
   try {
-    let response = await axios.post(`/api/shops/by/${params.userId}`, shop, {
+    let response = await axios.post(`https://aanglo.onrender.com/api/shops/by/${params.userId}`, shop, {
       headers: {
         Accept: "application/json",
         Authorization: "Bearer " + credentials.t,
@@ -15,7 +15,7 @@ const create = async (params, credentials, shop) => {
 
 const list = async () => {
   try {
-    let response = await axios.get("/api/shops");
+    let response = await axios.get("https://aanglo.onrender.com/api/shops");
     return response.data;
   } catch (err) {
     throw err;
@@ -24,7 +24,7 @@ const list = async () => {
 
 const listByOwner = async (params, credentials) => {
   try {
-    let response = await axios.get("/api/shops/by/" + params.userId, {
+    let response = await axios.get("https://aanglo.onrender.com/api/shops/by/" + params.userId, {
       headers: {
         Accept: "application/json",
         Authorization: "Bearer " + credentials.t,
@@ -38,7 +38,7 @@ const listByOwner = async (params, credentials) => {
 
 const read = async (params) => {
   try {
-    const response = await axios.get(`/api/shop/${params.shopId}`);
+    const response = await axios.get(`https://aanglo.onrender.com/api/shop/${params.shopId}`);
     return response.data;
   } catch (error) {
     throw error;
@@ -47,7 +47,7 @@ const read = async (params) => {
 
 const update = async (params, credentials, store) => {
   try {
-    const response = await axios.put("/api/shops/" + params.shopId, store, {
+    const response = await axios.put("https://aanglo.onrender.com/api/shops/" + params.shopId, store, {
       headers: {
         Accept: "application/json",
         Authorization: "Bearer " + credentials.t,

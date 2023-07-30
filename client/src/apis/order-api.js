@@ -18,7 +18,7 @@ import axios from "axios";
 const create = async (params, credentials, order) => {
   try {
     const response = await axios.post(
-      `/api/orders/${params.userId}`,
+      `https://aanglo.onrender.com/api/orders/${params.userId}`,
       { order: order },
       {
         headers: {
@@ -35,7 +35,7 @@ const create = async (params, credentials, order) => {
 };
 const listByShop = async (params, credentials) => {
   try {
-    const response = await axios.get("/api/orders/shop/" + params.shopId, {
+    const response = await axios.get("https://aanglo.onrender.com/api/orders/shop/" + params.shopId, {
       headers: {
         Accept: "application/json",
         Authorization: "Bearer " + credentials.t,
@@ -49,7 +49,7 @@ const listByShop = async (params, credentials) => {
 
 const getStatusValues = async () => {
   try {
-    let response = await axios.get("/api/order/status_values");
+    let response = await axios.get("https://aanglo.onrender.com/api/order/status_values");
     return response.data;
   } catch (err) {
     throw err;
@@ -78,7 +78,7 @@ const update = async (params, credentials, product) => {
 const cancelProduct = async (params, credentials, product) => {
   try {
     let response = await axios.put(
-      "/api/order/" + params.shopId + "/cancel/" + params.productId,
+      "https://aanglo.onrender.com/api/order/" + params.shopId + "/cancel/" + params.productId,
       product,
       {
         headers: {
@@ -96,7 +96,7 @@ const cancelProduct = async (params, credentials, product) => {
 const processCharge = async (params, credentials, product) => {
   try {
     let response = await axios.put(
-      "/api/order/" +
+      "https://aanglo.onrender.com/api/order/" +
         params.orderId +
         "/charge/" +
         params.userId +
