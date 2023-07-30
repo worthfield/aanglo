@@ -19,11 +19,10 @@ app.use(express.static(join(__dirname, '../client/public')));
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-// app.use(cors({
-//     origin: 'http://localhost:3000',
-//     credentials: true
-//   }));
-app.use(cors())
+app.use(cors({
+    origin: 'https://frontend-aanglo.onrender.com',
+    credentials: true
+  }));
 app.use("/", userRoutes);
 app.use("/", authRoutes);
 app.use("/", shopRoutes);
