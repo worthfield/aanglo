@@ -1,12 +1,13 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import AddToCart from "../cart/AddToCart";
 import { BsGrid3X3Gap } from "react-icons/bs";
 import { FaListUl } from "react-icons/fa";
+import { MyContext } from "../Context-api";
 import marketplace from "../assets/images/marketplace.jpg";
 
-
 const Products = (props) => {
+  const { addToCart } = useContext(MyContext);
   const [list, setList] = useState(true);
 
   const uniqueCategories = [
@@ -16,6 +17,11 @@ const Products = (props) => {
   const imageUrl = props.products?._id
     ? `/api/product/photo/${props.products._id}?${new Date().getTime()}`
     : "/api/product/defaultphoto";
+
+  const handleAddToCart = (item) => {
+    addToCart(item);
+  };
+
   return (
     <div className="container mt-2 bg-white mx-auto">
       {props.products.length > 0 ? (
@@ -159,15 +165,22 @@ const Products = (props) => {
                       <div className="mt-[6px] mb-[11px] font-bold">
                         Rs.{product.price}
                       </div>
-                      <button
+                      <div
                         className={`bg-red-500 uppercase rounded-full text-white  ${
                           list
                             ? "px-4 py-3 font-bold"
                             : "sm:px-2 sm:py-2 py-1 sm:font-bold"
                         }`}
                       >
-                        <AddToCart item={product} />
-                      </button>
+                        {/* <AddToCart item={product} /> */}
+                        {product.quantity >= 0 ? (
+                          <button onClick={() => handleAddToCart(product)}>
+                            Add to cart
+                          </button>
+                        ) : (
+                          <button>disabled</button>
+                        )}
+                      </div>
                     </div>
                   </div>
                 </div>

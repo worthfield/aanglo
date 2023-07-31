@@ -21,6 +21,7 @@ const cart = {
       localStorage.setItem("cart", JSON.stringify(cart));
     }
   },
+  
     updateCart(itemIndex, quantity) {
     let cart = []
     if (typeof window !== "undefined") {

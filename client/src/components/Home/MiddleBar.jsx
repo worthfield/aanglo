@@ -9,7 +9,7 @@ import { FaShoppingBag, FaBars } from "react-icons/fa";
 import cart from "../../apis/cart-api";
 
 const MiddleBar = () => {
-  const { toggle, setToggle } = useContext(MyContext);
+  const { toggle, setToggle,getItemCount} = useContext(MyContext);
   const loggedIn = auth.isAuthenticated();
   return (
     <div className="container mt-3 mb-3  mx-auto flex items-center justify-between">
@@ -67,9 +67,9 @@ const MiddleBar = () => {
         <Link to={"cart"} className="relative">
           <FaShoppingBag size={24} />
 
-          {cart.itemTotal() > 0 && (
+          {getItemCount() > 0 && (
             <span className="absolute top-0 right-0 transform translate-x-1/3 -translate-y-1/3 bg-red-500 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">
-              {cart.itemTotal()}
+              {getItemCount()}
             </span>
           )}
         </Link>
@@ -80,11 +80,11 @@ const MiddleBar = () => {
         </div>
         <Link to={"cart"} className="relative">
           <FaShoppingBag size={24} />
-          {cart.itemTotal() > 0 && (
+          {getItemCount() > 0 && (
             <span className="absolute top-0 right-0 transform translate-x-1/3 -translate-y-1/3 bg-red-500 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">
-              {cart.itemTotal()}
+              {getItemCount()}
             </span>
-          )}{" "}
+          )}
         </Link>
         <div className="cursor-pointer" onClick={() => setToggle(!toggle)}>
           <FaBars size={24} />

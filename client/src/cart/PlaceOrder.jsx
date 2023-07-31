@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import auth from "../authentication/auth-helper";
 import { create } from "../apis/order-api";
-import cart from "../apis/cart-api";
-import { useParams } from "react-router-dom";
+import { Navigate, useParams } from "react-router-dom";
+import { MyContext } from "../Context-api";
 const PlaceOrder = (props) => {
+  const {emptyCart}=useContext(MyContext)
   const [values, setValues] = useState({
     orderId: "",
     redirect: false,
@@ -17,7 +18,7 @@ const PlaceOrder = (props) => {
         { userId: jwt.user._id },
         { t: jwt.token },props.checkoutDetails
       );
-      cart.emptyCart(() => {
+      emptyCart(() => {
         setValues({ ...values, orderId: data._id, redirect: true });
       });
     } catch (error) {
@@ -26,8 +27,10 @@ const PlaceOrder = (props) => {
       }
     }
   };
-  console.log(values)
 
+  if(values.redirect){
+    return <Navigate to={'/'}/>
+  }
   return (
     <div>
       <button onClick={createOrder}>Place Order</button>
