@@ -1,7 +1,7 @@
 import axios from "axios";
 const create = async (user) => {
   try {
-    let response = await axios.post("https://aanglo.onrender.com/api/users", user);
+    let response = await axios.post("/api/users", user);
     return response.data;
   } catch (error) {
     throw error;
@@ -9,7 +9,7 @@ const create = async (user) => {
 };
 const verify = async (user) => {
   try {
-    let response = await axios.post('https://aanglo.onrender.com/api/users/verify', user);
+    let response = await axios.post('/api/users/verify', user);
     return response.data;
   } catch (error) {
     throw error;
@@ -18,7 +18,7 @@ const verify = async (user) => {
 
 const list = async () => {
   try {
-    let response = await axios.get('https://aanglo.onrender.com/api/users');
+    let response = await axios.get('/api/users');
     return response.data;
   } catch (error) {
     throw error;
@@ -27,7 +27,7 @@ const list = async () => {
 
 const read = async (params, credentials) => {
   try {
-    let response = await axios.get(`https://aanglo.onrender.com/api/users/${params.userId}`, {
+    let response = await axios.get(`/api/users/${params.userId}`, {
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
@@ -42,7 +42,7 @@ const read = async (params, credentials) => {
 
 const update = async (params,credentials, user) => {
   try {
-    let response = await axios.put(`https://aanglo.onrender.com/api/users/${params.userId}`, user,{
+    let response = await axios.put(`/api/users/${params.userId}`, user,{
       headers:{
         Accept:"application/json",
         Authorization:"Bearer "+ credentials.t
@@ -57,7 +57,7 @@ const update = async (params,credentials, user) => {
 
 const remove = async (params,credentials) => {
   try {
-    let response = await axios.delete(`https://aanglo.onrender.com/api/users/${params.userId}`,{
+    let response = await axios.delete(`/api/users/${params.userId}`,{
       headers:{
         Accept:"application/json",
         'Content-Type':'application/json',

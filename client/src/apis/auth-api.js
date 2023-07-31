@@ -3,7 +3,7 @@ const apiUrl = "https://aanglo.onrender.com/";
 
 const signin = async (user) => {
   try {
-    let response = await axios.post('https://aanglo.onrender.com/auth/signin', user, {
+    let response = await axios.post('/auth/signin', user, {
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
@@ -18,7 +18,7 @@ const signin = async (user) => {
 
 const signout = async () => {
   try {
-    const response = await axios.get('https://aanglo.onrender.com/auth/signin');
+    const response = await axios.get('/auth/signin');
     return response.data;
   } catch (error) {
     throw error;
