@@ -1,6 +1,6 @@
 import axios from "axios";
 import queryString from "query-string";
-const apiUrl = "https://aanglo.onrender.com/";
+const apiUrl = "https://aanglo.onrender.com";
 const create = async (params, credentials, product) => {
   try {
     const response = await axios.post(

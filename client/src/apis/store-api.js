@@ -1,5 +1,5 @@
 import axios from "axios";
-const apiUrl = "https://aanglo.onrender.com/";
+const apiUrl = "https://aanglo.onrender.com";
 const create = async (params, credentials, shop) => {
   try {
     let response = await axios.post(`${apiUrl}/api/shops/by/${params.userId}`, shop, {
