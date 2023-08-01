@@ -23,7 +23,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 // origin: process.env.REACT_APP_DOMAIN || 'http://localhost:3000',
 app.use(cors({
-    origin:'https://frontaanglo.onrender.com/',
+    origin:'https://frontaanglo.onrender.com',
     credentials: true
   }));
 app.use("/", userRoutes);
