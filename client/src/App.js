@@ -26,9 +26,12 @@ import NewProduct from "./product/NewProduct";
 import SellerLayout from "./layouts/SellerLayout";
 import { requireAuth, sellerAuth } from "./utils";
 import Product from "./product/Product";
-import AllProducts from './product/AllProducts'
-import Cart from './cart/Cart'
-import ShopOrders from './order/ShopOrders'
+import AllProducts from "./product/AllProducts";
+import Cart from "./cart/Cart";
+import ShopOrders from "./order/ShopOrders";
+import MyOrder from "./order/MyOrder";
+import Order from "./order/Order";
+import Error from './components/Error'
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<MainLayout />}>
@@ -54,21 +57,20 @@ const router = createBrowserRouter(
             return await requireAuth();
           }}
         />
+        <Route path="myorders" element={<MyOrder />} />
       </Route>
+      <Route path="/order/:orderId" element={<Order />} />
 
       {/* store */}
 
-      <Route
-        path="shops"
-        element={<Shops />}
-      />
+      <Route path="shops" element={<Shops />} />
 
       <Route path="shops/:shopId" element={<Store />} />
 
       <Route
         path="seller/shops"
         element={<SellerLayout />}
-        loader={async ({request}) => {
+        loader={async ({ request }) => {
           return await sellerAuth(request);
         }}
       >
@@ -79,13 +81,13 @@ const router = createBrowserRouter(
       </Route>
       {/* product */}
       <Route path="/product/:productId" element={<Product />} />
-      <Route path="product" element={<AllProducts/>}/>
+      <Route path="product" element={<AllProducts />} />
 
       {/* cart */}
       <Route path="/cart" element={<Cart />} />
 
       <Route path="/seller/orders/:shop/:shopId" element={<ShopOrders />} />
-
+      <Route path="*" element={<Error/>}/>
     </Route>
   )
 );

@@ -56,6 +56,8 @@ const create = (req, res) => {
   });
 };
 
+
+
 const shopByID = async (req, res, next, id) => {
   try {
     let shop = await Shop.findById(id).populate("owner", "_id name").exec();
@@ -66,7 +68,7 @@ const shopByID = async (req, res, next, id) => {
     req.shop = shop;
     next();
   } catch (err) {
-    return res.status("400").json({
+    return res.status(400).json({
       error: "Could not retrieve shop",
     });
   }

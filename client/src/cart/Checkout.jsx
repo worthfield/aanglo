@@ -1,12 +1,14 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import auth from "../authentication/auth-helper";
 import cart from "../apis/cart-api";
 import PlaceOrder from "./PlaceOrder";
+import { MyContext } from "../Context-api";
 const Checkout = () => {
+  const {getCart}=useContext(MyContext)
   const user = auth.isAuthenticated().user;
   const [values, setValues] = useState({
     checkoutDetails: {
-      products: cart.getCart(),
+      products: getCart(),
       customer_name: user.name,
       customer_email: user.email,
       delivery_address: {

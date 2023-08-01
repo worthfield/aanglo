@@ -144,6 +144,7 @@ const ProfileLayout = () => {
           </div>
           <NavLink
             to={`/user/${loggedIn.user._id}`}
+            end
             className={({ isActive }) => (isActive ? active : nonActive)}
           >
             <FaUserAlt size={20} />
@@ -158,7 +159,7 @@ const ProfileLayout = () => {
             <p className="text-xl">Address</p>
           </NavLink>
           <NavLink
-            to={`/user/${loggedIn.user._id}/orders`}
+            to={`/user/${loggedIn.user._id}/myorders`}
             className={({ isActive }) => (isActive ? active : nonActive)}
           >
             <MdFindInPage size={24} />
@@ -172,7 +173,7 @@ const ProfileLayout = () => {
             <p className="text-xl">Payments</p>
           </NavLink>
         </div>
-        <div className="w-full p-4 md:p-5 md:w-[75%] sm:w-[70%] ">
+        <div className="w-full p-4 md:p-5 md:w-[75%] sm:w-[70%] overflow-y-scroll h-[700px]">
           <Outlet />
         </div>
       </div>
