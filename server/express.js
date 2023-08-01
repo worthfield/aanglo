@@ -21,8 +21,9 @@ app.use(express.static(join(__dirname, '../client/public')));
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+// origin: process.env.REACT_APP_DOMAIN || 'http://localhost:3000',
 app.use(cors({
-    origin: process.env.REACT_APP_DOMAIN || 'http://localhost:3000',
+    origin:'https://frontaanglo.onrender.com/',
     credentials: true
   }));
 app.use("/", userRoutes);
