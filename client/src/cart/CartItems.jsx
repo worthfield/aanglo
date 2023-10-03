@@ -10,18 +10,27 @@ const CartItems = (props) => {
 
   const [addCartItems, setAddCartItems] = useState(getCart);
 
+  const handleChange = (index) => (action) => {
+    // const newQuantity = parseInt(event.target.value, 10); // Convert the value to an integer
+    // let updatedCartItems = addCartItems.slice(); // Create a shallow copy of the cartItems array
 
-  const handleChange = (index) => (event) => {
-    const newQuantity = parseInt(event.target.value, 10); // Convert the value to an integer
+    // if (isNaN(newQuantity) || newQuantity < 1) {
+    //   // If the new quantity is not a number or less than 1, set it to 1
+    //   updatedCartItems[index].quantity = 1;
+    // } else {
+    //   updatedCartItems[index].quantity = newQuantity;
+    // }
+
     let updatedCartItems = addCartItems.slice(); // Create a shallow copy of the cartItems array
+    const currentQuantity = updatedCartItems[index].quantity;
+    const minQuantity = 1;
+    const maxQuantity = updatedCartItems[index].product.quantity;
 
-    if (isNaN(newQuantity) || newQuantity < 1) {
-      // If the new quantity is not a number or less than 1, set it to 1
-      updatedCartItems[index].quantity = 1;
-    } else {
-      updatedCartItems[index].quantity = newQuantity;
+    if (action === "increment" && currentQuantity < maxQuantity) {
+      updatedCartItems[index].quantity = currentQuantity + 1;
+    } else if (action === "decrement" && currentQuantity > minQuantity) {
+      updatedCartItems[index].quantity = currentQuantity - 1;
     }
-
     setAddCartItems(updatedCartItems);
     updateCart(index, updatedCartItems[index].quantity);
   };
@@ -40,7 +49,6 @@ const CartItems = (props) => {
     setAddCartItems(updatedCartItems);
   };
 
-
   const openCheckout = () => {
     props.setCheckout(true);
   };
@@ -49,43 +57,62 @@ const CartItems = (props) => {
       {addCartItems?.length > 0 ? (
         <div className="border-t-2 ">
           {addCartItems.map((item, i) => {
-            console.log(item);
+          
             return (
-              <div key={i} className="flex border-b-2 gap-4 py-[40px]">
-                <div className="image w-[6rem] h-[6rem] sm:w-[12rem] bg-white sm:h-[12rem]">
-                  <img
-                    className="w-full h-full"
-                    src="https://tailwindui.com/img/ecommerce-images/shopping-cart-page-01-product-01.jpg"
-                    alt=""
-                  />
-                </div>
-                <div className="info flex flex-1 justify-between">
-                  <div className="left flex mr-[50px] justify-between flex-1">
-                    <div className="basic">
-                      <div>{item.product.name}</div>
-                      <div className="text-gray-400">
-                        by {item.product.shop.name}
+              <div key={i} className="border-b-2 ">
+                <div className="flex gap-4 py-[40px]">
+                  <div className="image w-[6rem] h-[6rem] sm:w-[12rem] bg-white sm:h-[12rem]">
+                    <img
+                      className="w-full h-full"
+                      src="https://tailwindui.com/img/ecommerce-images/shopping-cart-page-01-product-01.jpg"
+                      alt=""
+                    />
+                  </div>
+                  <div className="info flex flex-1 justify-between">
+                    <div className="left flex mr-[50px] justify-between flex-1">
+                      <div className="basic">
+                        <div className="text-sm sm:text-base font-medium">
+                          {item.product.name}
+                        </div>
+                        <div className="text-gray-400 mb-2 text-sm">
+                          by {item.product.shop.name}
+                        </div>
+                        <div className="text-sm">Rs.{item.product.price}</div>
+                        <div className="text-sm hidden font-medium">
+                          Total: {item.product.price * item.quantity}
+                        </div>
                       </div>
-                      <div>Rs.{item.product.price}</div>
-                      <div>Total: {item.product.price * item.quantity}</div>
+  
                     </div>
-                    <div className="basic flex gap-1 justify-center">
-                      <div className="p-1">Quantity</div>
-                      <input
-                        value={item.quantity}
-                        type="number"
-                        min="1"
-                        max={item.product.quantity}
-                        onChange={handleChange(i)}
-                        className="border-2 focus:outline-blue-300 w-[50px] h-[30px] rounded-md p-1 border-black"
-                      />
+                    <div
+                      className="right cursor-pointer h-[30px]"
+                      onClick={() => removeItem(i)}
+                    >
+                      <AiOutlineClose size={24} />
                     </div>
                   </div>
-                  <div
-                    className="right cursor-pointer h-[30px]"
-                    onClick={() => removeItem(i)}
-                  >
-                    <AiOutlineClose size={24} />
+                </div>
+                <div className="flex items-center mr-3 mb-3 justify-end">
+                  <div className="mr-3">
+                    <button
+                      type="button" // Set the type attribute to "button"
+                      onClick={() => handleChange(i)("decrement")}
+                      className="border rounded-md px-3 text-xl"
+                    >
+                      -
+                    </button>
+                    <span className="px-3 text-lg py-1 rounded-md bg-gray-100">{item.quantity}</span>
+                    <button
+                      type="button" // Set the type attribute to "button"
+                      onClick={() => handleChange(i)("increment")}
+                      className="border rounded-md px-3 text-xl"
+                      disabled={item.quantity >= item.product.quantity}
+                    >
+                      +
+                    </button>
+                  </div>
+                  <div className="font-medium text-sm  sm:text-base">
+                    Total: {item.product.price * item.quantity}
                   </div>
                 </div>
               </div>
@@ -94,7 +121,7 @@ const CartItems = (props) => {
         </div>
       ) : (
         <div className="col-span-2 place-self-center">
-          <p className="text-2xl text-center font-mono text-red-500">
+          <p className="sm:text-2xl text-xl text-center font-mono text-red-500">
             Your Shopping Cart is empty ?
           </p>
           <div>
@@ -105,7 +132,7 @@ const CartItems = (props) => {
           </div>
           <Link
             to={"/"}
-            className="text-center lg:ml-20 text-lg font-bold text-blue-700"
+            className=" w-full underline flex justify-center text-lg font-bold text-blue-700"
           >
             Continue Shoping on Aanglo...
           </Link>
@@ -132,16 +159,15 @@ const CartItems = (props) => {
             (auth.isAuthenticated() ? (
               <button
                 onClick={openCheckout}
-                className="mt-[24px] w-full bg-[#4f46e5] text-white rounded-md text-xl p-3"
+                className="mt-[24px] w-full bg-red-500 text-white rounded-md text-xl p-3"
               >
                 Checkout
               </button>
             ) : (
-              <Link
-                to="/signin"
-                className="mt-[24px] w-full bg-[#4f46e5] text-white rounded-md text-xl p-3"
-              >
-                Sign in to checkout
+              <Link to="/signin">
+                <p className="mt-[24px] w-full bg-red-500 text-white text-center rounded-md text-xl p-3">
+                  Sign in to checkout
+                </p>
               </Link>
             ))}
         </div>

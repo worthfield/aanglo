@@ -1,49 +1,49 @@
-import React, { useState } from "react";
-import { create } from "../apis/product-api";
-import { Link, useParams } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Link, Navigate, useParams } from "react-router-dom";
 import auth from "../authentication/auth-helper";
+import { read, update } from "../apis/product-api";
 import { BiArrowBack } from "react-icons/bi";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-const NewProduct = () => {
+
+const EditProduct = () => {
   const [values, setValues] = useState({
+    id: "",
     name: "",
     description: "",
+    photo: "",
     category: "",
     quantity: "",
     price: "",
+    redirect: false,
     error: "",
-    photo: null,
   });
   const [disableButton, setDisableButton] = useState(false);
-  const params = useParams();
+
   const jwt = auth.isAuthenticated();
-  const notify = (errorMessage) => {
-    toast.error(errorMessage, {
-      position: "top-center",
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "light",
-    });
+  const params = useParams();
+  console.log(params)
+  useEffect(() => {
+    fetchData();
+  }, []);
+  const fetchData = async () => {
+    try {
+      const data = await read({
+        productId: params.productId,
+      });
+      setValues({
+        ...values,
+        id: data._id,
+        name: data.name,
+        description: data.description,
+        category: data.category,
+        quantity: data.quantity,
+        price: data.price,
+      });
+    } catch (err) {
+      if (err.response) {
+        console.log(err.response.data.error);
+      }
+    }
   };
-
-  const successProduct = (message) => {
-    toast.success(message, {
-      position: "top-center",
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "light",
-    });
-  };
-
   const handleChange = (name) => (event) => {
     let value;
 
@@ -61,7 +61,8 @@ const NewProduct = () => {
 
     setValues({ ...values, [name]: value });
   };
-  const handleSubmit = async (e) => {
+  console.log(values);
+  const handleClick = async (e) => {
     e.preventDefault();
     setDisableButton(true);
     let productData = new FormData();
@@ -72,33 +73,23 @@ const NewProduct = () => {
     values.price && productData.append("price", values.price);
     values.photo && productData.append("photo", values.photo);
     try {
-      const data = await create(
-        { shopId: params.shopId },
+      const data = await update(
+        { shopId: params.shopId, productId: params.productId },
         { t: jwt.token },
         productData
       );
-      const sucessMessage = "Product has been added.";
-      successProduct(sucessMessage);
-      setValues({
-        ...values,
-        name: "",
-        description: "",
-        category: "",
-        quantity: "",
-        price: "",
-        photo: null,
-      });
-      setDisableButton(false);
-    } catch (error) {
-      if (error.response) {
-        const errorMessage = error.response.data.error;
-        setValues({ ...values, error: errorMessage });
-        notify(errorMessage);
-        setDisableButton(false);
+      setValues({ ...values, redirect: true });
+      setDisableButton(false)
+    } catch (err) {
+      if (err.response) {
+        setValues({ ...values, error: err.response.data.error });
+        setDisableButton(false)
       }
     }
   };
-  console.log(values)
+  if(values.redirect){
+    return <Navigate to={`/seller/shops/edit/${params.shopId}`}/>
+  }
   return (
     <div className="container mx-auto">
       <Link to=".." className="flex gap-2 ml-3 mt-[24px]  items-center">
@@ -111,7 +102,7 @@ const NewProduct = () => {
           className="lg:ml-[120px] flex flex-col w-full px-4 md:px-0 md:w-[400px] sm:w-[350px] lg:w-[500px] mt-[24px] lg:mt-[64px] gap-3"
         >
           <p className="text-center italic font-bold lg:text-xl text-base mb-4">
-            List your store...
+            Edit your Product...
           </p>
           <div className="flex items-center border-2 lg:w-[500px] w-full rounded-lg">
             <label className="relative block lg:w-[500px] md:w-[400px] sm:w-[350px] w-full cursor-pointer h-48 bg-gray-200 border-2 border-gray-300 rounded-lg">
@@ -152,15 +143,11 @@ const NewProduct = () => {
             />
           </div>
           <div className="flex items-center border-2 lg:w-[500px] w-full rounded-lg">
-            {/* <input
-              type={"text"}
-              className="py-3 px-2 focus:bg-white focus:outline-blue-200 rounded-lg w-full"
-              name="category"
+            <select
+              className="w-full py-3 px-2 focus:outline-blue-200 rounded-lg"
               value={values.category}
               onChange={handleChange("category")}
-              placeholder="Category"
-            /> */}
-            <select className="w-full py-3 px-2 focus:outline-blue-200 rounded-lg" value={values.category} onChange={handleChange('category')}>
+            >
               <option value="">Optional</option>
               <option value="Electronics">Electronics</option>
               <option value="Men Clothing">Men Clothing</option>
@@ -195,34 +182,22 @@ const NewProduct = () => {
               onChange={handleChange("description")}
               rows="5"
               name="description"
-              placeholder="Describe about your store..."
+              placeholder="Describe about your product..."
             />
           </div>
           <button
             className={`px-4 py-2 mb-[64px] rounded-lg text-white font-bold  ${
               disableButton ? "bg-gray-700 cursor-not-allowed" : "bg-red-500 "
             }`}
-            onClick={handleSubmit}
-            disabled={disableButton}
+              onClick={handleClick}
+              disabled={disableButton}
           >
-            Sell your product
+            Edit your product
           </button>
         </form>
       </div>
-      <ToastContainer
-        position="top-center"
-        autoClose={5000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="light"
-      />
     </div>
   );
 };
 
-export default NewProduct;
+export default EditProduct;

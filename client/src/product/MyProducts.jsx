@@ -21,7 +21,6 @@ const MyProducts = (props) => {
     const index = updatedProducts.indexOf(product);
     setProducts(updatedProducts);
   };
-  const logo = "//";
   return (
     //   <Link to={"/seller/" + props.shopId + "/products/new"}>New Product</Link>
     // <div>
@@ -52,9 +51,10 @@ const MyProducts = (props) => {
     //           <br/></span>})}
     // </div>
     <div className="mt-[36px]">
-      <p className="mb-2 font-bold text-2xl italic">Your products</p>
+      <p className="mb-2 font-bold text-xl ml-3 italic">Your products</p>
+      
       {products.map((product, i) => {
-        return <ProductList key={i} product={product} />;
+        return <ProductList key={i} shopId={props.shopId} removeProduct={removeProduct} product={product} />;
       })}
     </div>
 

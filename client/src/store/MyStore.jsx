@@ -54,12 +54,12 @@ const MyStore = () => {
   const handleMenuClick = () => {
     setShowMenu(!showMenu);
   };
-  //   const removeShop = (shop) => {
-  //     const updatedShops = [...shops];
-  //     const index = updatedShops.indexOf(shop);
-  //     updatedShops.splice(index, 1);
-  //     setShops(updatedShops);
-  //   };
+    const removeShop = (shop) => {
+      const updatedShops = [...shops];
+      const index = updatedShops.indexOf(shop);
+      updatedShops.splice(index, 1);
+      setShops(updatedShops);
+    };
   if (redirectToSignin) {
     return <Navigate to="/signin" />;
   }
@@ -69,9 +69,9 @@ const MyStore = () => {
   return (
     <div className="container mx-auto">
       <div className="grid grid-cols-2 gap-4 mt-[24px]">
-        <div className="bg-red-400 h-[400px] lg:h-[400px] rounded-lg md:h-[300px] col-span-2 md:col-span-1">
+        <div className="bg-red-400 h-[400px] lg:h-[400px] sm:rounded-lg md:h-[300px] col-span-2 md:col-span-1">
           <img
-            className="w-full h-full object-cover bg-center rounded-lg bg-cover"
+            className="w-full h-full object-cover bg-center sm:rounded-lg bg-cover"
             src={store_banner}
             alt="store banner"
           />
@@ -80,28 +80,28 @@ const MyStore = () => {
           <div className="grid gap-2 mt-1  grid-cols-1 w-full sm:grid-cols-2">
             <Link
               to={"new"}
-              className="bg-[#fc3b40] text-xl text-white rounded-lg w-full h-full text-center py-[30px] px-[30px] "
+              className="bg-[#fc3b40] text-xl text-white sm:rounded-lg w-full h-full text-center py-[30px] px-[30px] "
             >
               + Create a new store
             </Link>
-            <Link className="bg-[#fd630b] text-xl text-white rounded-lg w-full h-full text-center py-[30px] px-[30px] ">
+            <Link className="bg-[#fd630b] text-xl text-white sm:rounded-lg w-full h-full text-center py-[30px] px-[30px] ">
               Find amazing deal with us
             </Link>
-            <Link className="bg-green-500 text-xl text-white rounded-lg w-full h-full text-center py-[30px] px-[30px] ">
+            <Link className="bg-green-500 text-xl text-white sm:rounded-lg w-full h-full text-center py-[30px] px-[30px] ">
               Checkout your orders
             </Link>
-            <Link className="bg-[#709b9e] text-xl text-white rounded-lg w-full h-full text-center py-[30px] px-[30px] ">
+            <Link className="bg-[#709b9e] text-xl text-white sm:rounded-lg w-full h-full text-center py-[30px] px-[30px] ">
               Add new product on your store
             </Link>
           </div>
         </div>
       </div>
-      <p className="mt-[30px] mb-[16px] text-xl italic font-bold">
+      <p className="mt-[30px] ml-3 mb-[16px] text-xl italic font-bold">
         List of your shop
       </p>
 
       {shops.length >= 1 ? (
-        shops.map((shop, i) => <StoreList key={i} shop={shop} />)
+        shops.map((shop, i) => <StoreList key={i} onRemove={removeShop} shop={shop} />)
       ) : (
         <div className="font-bold italic bg-red-300 p-2 text-center text-2xl rounded-lg mb-2">
           Create amazing store with us.

@@ -62,7 +62,7 @@ const NewStore = () => {
 
   return (
     <div className="container mx-auto">
-      <Link to=".." className="flex gap-2 mt-[24px]  items-center">
+      <Link to=".." className="flex gap-2 ml-3 mt-[24px]  items-center">
         <BiArrowBack />
         <p>Back to store</p>
       </Link>

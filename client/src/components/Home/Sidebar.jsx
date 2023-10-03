@@ -1,18 +1,37 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useState, useEffect, useRef } from "react";
 import { MyContext } from "../../Context-api";
 import { AiOutlineClose } from "react-icons/ai";
 import { BiChevronRight } from "react-icons/bi";
 import logo from "../../assets/images/ecom.png";
-import { NavLink } from "react-router-dom";
+import { Link, NavLink,useNavigate } from "react-router-dom";
 import auth from "../../authentication/auth-helper";
-import { listCategories } from "../../apis/product-api";
+import { list, listCategories } from "../../apis/product-api";
 
 const Sidebar = () => {
-  const { toggle, setToggle } = useContext(MyContext);
+  const { toggle, setToggle,sidebarRef } = useContext(MyContext);
   const [hide, setHide] = useState(true);
   const [hideCategory, setHideCategory] = useState(true);
   const loggedIn = auth.isAuthenticated();
   const [categories, setCategories] = useState([]);
+  const navigate = useNavigate();
+  
+  useEffect(() => {
+    // Function to handle clicks outside the sidebar
+    const handleClickOutside = (event) => {
+      if (sidebarRef.current && !sidebarRef.current.contains(event.target)) {
+        setToggle(false);
+      }
+    };
+
+    // Add click event listener when the sidebar is open
+    if (toggle) {
+      document.addEventListener("click", handleClickOutside);
+    }
+    // Remove the event listener when the component unmounts or sidebar is closed
+    return () => {
+      document.removeEventListener("click", handleClickOutside);
+    };
+  }, [toggle]);
   useEffect(() => {
     fetchCategory();
   }, []);
@@ -24,15 +43,28 @@ const Sidebar = () => {
       console.log(error);
     }
   };
+  const handleCategory = async(category)=>{
+    try{
+      const data = await list({
+        category:category
+      })
+     
+      navigate('/search',{state:{results:data}})
+      setToggle(false)
+    }
+    catch(error){
+      console.log(error)
+    }
+  }
 
   const handleSignout = () => {
     auth.clearJWT(() => {
       window.location.reload();
     });
   };
-
   return (
     <div
+    
       className={`fixed top-0 z-[50] h-full w-[80%] sm:w-[50%] md:w-[30%] ${
         toggle
           ? " bg-white transition-[386ms] left-0"
@@ -40,13 +72,13 @@ const Sidebar = () => {
       }`}
     >
       <div className="logo flex items-center justify-between px-[50px] border-b-2 py-1">
-        <div className="w-[200px]">
+        <Link to={"."} onClick={()=>setToggle(false)} className="w-[200px]">
           <img
             src={logo}
             alt="aanglo.png"
             className="w-full h-full object-cover object-center"
           />
-        </div>
+        </Link>
 
         <AiOutlineClose
           size={24}
@@ -62,6 +94,7 @@ const Sidebar = () => {
               style={({ isActive }) => {
                 return { color: isActive ? "red" : "" };
               }}
+              onClick={()=>setToggle(false)}
               className="capitalize hover:text-red-500 text-gray-500 leading-12"
             >
               Home
@@ -70,6 +103,7 @@ const Sidebar = () => {
           <li className="px-5 border-b border-dashed">
             <NavLink
               to={"shops"}
+              onClick={()=>setToggle(false)}
               style={({ isActive }) => {
                 return { color: isActive ? "red" : "" };
               }}
@@ -82,6 +116,7 @@ const Sidebar = () => {
             <li className="px-5 border-b border-dashed">
               <NavLink
                 to={"seller/shops"}
+                onClick={()=>setToggle(false)}
                 style={({ isActive }) => {
                   return { color: isActive ? "red" : "" };
                 }}
@@ -109,7 +144,11 @@ const Sidebar = () => {
         <>
           {categories.map((category, index) => {
             return (
-              <div key={index} className="border-b-2 cursor-pointer pr-5 pl-10 border-dashed p-3">
+              <div
+                key={index}
+                onClick={()=>handleCategory(category)}
+                className="border-b-2 cursor-pointer pr-5 pl-10 border-dashed p-3"
+              >
                 {category}
               </div>
             );
@@ -140,6 +179,7 @@ const Sidebar = () => {
               style={({ isActive }) => {
                 return { color: isActive ? "red" : "" };
               }}
+              onClick={()=>setToggle(false)}
               className="capitalize w-full pr-5 pl-10 hover:text-red-500 text-gray-500 leading-12"
             >
               Sign in
@@ -148,6 +188,7 @@ const Sidebar = () => {
           <div className="border-b border-dashed">
             <NavLink
               to={"signup"}
+              onClick={()=>setToggle(false)}
               style={({ isActive }) => {
                 return { color: isActive ? "red" : "" };
               }}
@@ -162,6 +203,7 @@ const Sidebar = () => {
           <div className="border-b border-dashed">
             <NavLink
               to={`/user/${loggedIn?.user?._id}`}
+              onClick={()=>setToggle(false)}
               style={({ isActive }) => {
                 return { color: isActive ? "red" : "" };
               }}

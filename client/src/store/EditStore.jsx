@@ -84,7 +84,7 @@ const EditStore = () => {
 
   return (
     <div className="container mx-auto">
-      <Link to=".."className="flex gap-2 mt-[24px]  items-center">
+      <Link to=".."className="flex gap-2 ml-3 mt-[24px]  items-center">
         <BiArrowBack />
         <p>Back to store</p>
       </Link>
@@ -99,7 +99,7 @@ const EditStore = () => {
           <p className="text-center text-xl mt-[10px]">Customize your shop</p>
           <form
             encType="multipart/form-data"
-            className="flex flex-col items-center mx-auto  w-full h-full md:w-[300px] lg:w-[400px] gap-2 justify-center border-blue-300 rounded-lg "
+            className="flex flex-col items-center mx-auto  w-full h-full md:w-[300px] lg:w-[400px] gap-2 justify-center border-red-500 rounded-lg "
           >
             <div className="flex items-center border-2 w-full rounded-lg">
               <label className="relative block  w-full cursor-pointer h-[50px] bg-gray-200 border-2 border-gray-300 rounded-lg">
@@ -131,7 +131,7 @@ const EditStore = () => {
             </div>
 
             <input
-              className="py-3 px-2 w-full  focus:outline-blue-200 rounded-lg border-blue-400 border-2"
+              className="py-3 px-2 w-full  focus:outline-blue-200 rounded-lg border-2"
               type="text"
               value={values.name}
               onChange={handleChange("name")}
@@ -139,7 +139,7 @@ const EditStore = () => {
               placeholder="Enter your store name..."
             />
             <textarea
-              className="py-3 border-blue-400 border-2 px-2 w-full focus:bg-white rounded-lg focus:outline-blue-200"
+              className="py-3 border-2 px-2 w-full focus:bg-white rounded-lg focus:outline-blue-200"
               rows="2"
               name="description"
               type={"text"}
@@ -156,7 +156,7 @@ const EditStore = () => {
               </div>
             )}
             <button
-              className="bg-[#1D9BF0] px-4 py-2 mb-[64px] rounded-lg text-white font-bold"
+              className="bg-red-500 px-4 py-2 mb-[64px] rounded-lg text-white font-bold"
               onClick={handleClick}
             >
               Edit your store

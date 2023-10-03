@@ -12,10 +12,10 @@ const Deals = () => {
   const context = useContext(MyContext);
   const { previousSlide, nextSlide } = context;
   return (
-    <div className="container mx-auto  mb-[50px] lg:mb-[70px]  mt-[50px] gap-6 lg:mt-[70px]  flex md:flex-row flex-col ">
-      <div className="md:w-[40%] lg:w-[30%]">
-        <div className="flex justify-between items-center">
-          <h1 className="lg:text-2xl md:text-xl xl:text-3xl font-bold font-sans">
+    <div className="container mx-auto  mb-[50px] lg:mb-[70px]  mt-[50px] gap-6 lg:mt-[70px] flex md:flex-row flex-col ">
+      <div className="md:w-[40%] md:mx-3 lg:w-[30%]">
+        <div className="flex justify-between mx-3 sm:mx-0 items-center">
+          <h1 className="lg:text-2xl md:text-xl xl:text-3xl text-lg font-bold font-sans">
             Deals of the day
           </h1>
           <div className="flex gap-2">
@@ -31,14 +31,14 @@ const Deals = () => {
             />
           </div>
         </div>
-        <div className="mt-6  border-4 border-orange-400 ">
+        <div className="mt-6 mx-3 sm:mx-0 border-4 border-orange-400 ">
           <DealSlider />
         </div>
       </div>
 
-      <div className="px-[15px]">
+      <div className="px-[15px] w-full">
         <div className="flex justify-between items-center">
-          <h1 className="text-3xl font-bold font-sans">Top Rated Products</h1>
+          <h1 className="lg:text-3xl text-lg md:text-xl font-bold font-sans">Top Rated Products</h1>
           <div className="flex items-center gap-2 cursor-pointer text-red-500">
             <p className="font-bold">See more</p>
             <AiOutlineArrowRight className="font-bold" />

@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from "react";
 const MyContext = React.createContext();
 const Context = ({ children }) => {
   const [toggle, setToggle] = useState(false);
+  const [hide, sethide] = useState(true)
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const [cartItems, setCartItems] = useState(() => {
     const storedCart = localStorage.getItem("carts");
@@ -13,6 +14,9 @@ const Context = ({ children }) => {
   const [itemCount, setItemCount] = useState(calculateItemCount());
 
   const sliderRef = useRef(null);
+  const sidebarRef = useRef(null);
+
+ 
 
   useEffect(() => {
     const handleResize = () => {
@@ -25,6 +29,13 @@ const Context = ({ children }) => {
       setToggle(false);
     }
   }, [windowWidth]);
+  useEffect(()=>{
+    if(windowWidth > 1023){
+      sethide(true)
+    }
+  },[windowWidth])
+
+
   useEffect(() => {
     localStorage.setItem("carts", JSON.stringify(cartItems));
   }, [cartItems]);
@@ -132,6 +143,10 @@ const Context = ({ children }) => {
         updateCart,
         removeCartItem,
         emptyCart,
+        hide,
+        sethide,
+        sidebarRef
+        
       }}
     >
       {children}

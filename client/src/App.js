@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useContext } from "react";
 import "./App.css";
 import {
   Route,
   RouterProvider,
+  ScrollRestoration,
   createBrowserRouter,
   createRoutesFromElements,
 } from "react-router-dom";
@@ -26,15 +27,18 @@ import NewProduct from "./product/NewProduct";
 import SellerLayout from "./layouts/SellerLayout";
 import { requireAuth, sellerAuth } from "./utils";
 import Product from "./product/Product";
-import AllProducts from "./product/AllProducts";
 import Cart from "./cart/Cart";
 import ShopOrders from "./order/ShopOrders";
 import MyOrder from "./order/MyOrder";
 import Order from "./order/Order";
-import Error from './components/Error'
+import Error from "./components/Error";
+import Searches from './product/Searches'
+import EditProduct from "./product/EditProduct";
 const router = createBrowserRouter(
   createRoutesFromElements(
+    
     <Route path="/" element={<MainLayout />}>
+   
       <Route index element={<Home />} />
 
       {/* user */}
@@ -78,16 +82,18 @@ const router = createBrowserRouter(
         <Route path="new" element={<NewStore />} />
         <Route path=":shopId/products/new" element={<NewProduct />} />
         <Route path="edit/:shopId" element={<EditStore />} />
+        <Route path="edit/:shopId/:productId" element={<EditProduct/>}/>
       </Route>
       {/* product */}
       <Route path="/product/:productId" element={<Product />} />
-      <Route path="product" element={<AllProducts />} />
+      
+      <Route path="search" element={<Searches/>}/> 
 
       {/* cart */}
       <Route path="/cart" element={<Cart />} />
 
       <Route path="/seller/orders/:shop/:shopId" element={<ShopOrders />} />
-      <Route path="*" element={<Error/>}/>
+      <Route path="*" element={<Error />} />
     </Route>
   )
 );

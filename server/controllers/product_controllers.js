@@ -57,7 +57,7 @@ const listByShop = async (req, res) => {
 //   try {
 //     let product = await Product.findOne({slug})
 //   } catch (error) {
-    
+
 //   }
 // }
 
@@ -142,11 +142,20 @@ const listCategories = async (req, res) => {
 };
 
 const list = async (req, res) => {
+  const obj = req.query;
+
   const query = {};
   if (req.query.search)
     query.name = { $regex: req.query.search, $options: "i" };
   if (req.query.category && req.query.category != "All")
     query.category = req.query.category;
+
+  if (obj.minPrice && obj.maxPrice) {
+    query.price = {
+      $gte: parseFloat(req.query.minPrice),
+      $lte: parseFloat(req.query.maxPrice),
+    };
+  }
   try {
     let products = await Product.find(query)
       .populate("shop", "_id name")
@@ -182,7 +191,7 @@ const decreaseQuantity = async (req, res, next) => {
 
 const increaseQuantity = async (req, res, next) => {
   try {
-  const data =  await Product.findByIdAndUpdate(
+    const data = await Product.findByIdAndUpdate(
       req.product._id,
       { $inc: { quantity: req.body.quantity } },
       { new: true }
@@ -190,12 +199,54 @@ const increaseQuantity = async (req, res, next) => {
     next();
   } catch (error) {
     return res.status(400).json({
-      error: errorMessage(error)
+      error: errorMessage(error),
     });
   }
 };
+const remove = async (req, res) => {
+  try{
+    let product = req.product
+    let deletedProduct = await product.deleteOne()
+    res.json(deletedProduct)
+  
+  } catch (err) {
+    return res.status(400).json({
+      error: errorMessage(err)
+    })
+  }
+}
+const update = async(req,res)=>{
+  let form = new formidable.IncomingForm();
+  form.keepExtensions=true;
+  form.parse(req,async(err,fields,files)=>{
+    if(err){
+      res.status(400).json({
+        message:"Photo could not be uploaded"
+      })
+    }
+    let product = req.product;
+    product = extend(product,fields);
+    product.updated=Date.now();
+    if (files.photo) {
+      product.photo.data = fs.readFileSync(files.photo.filepath);
+      product.photo.contentType = files.photo.mimetype;
+    }
+    try {
+      let result = await product.save();
+      res.json(result);
+    }
+    catch (err) {
+      return res.status(400).json({
+        error: errorMessage(err),
+      });
+    }
 
-const photo = (req, res,next) => {
+  })
+
+}
+
+
+const photo = (req, res, next) => {
   if (req.product.photo.data) {
     res.set("Content-Type", req.product.photo.contentType);
     return res.send(req.product.photo.data);
@@ -205,21 +256,6 @@ const photo = (req, res,next) => {
 const defaultPhoto = (req, res) => {
   return res.sendFile(profileImage);
 };
-
-
-const allProducts = async(req,res)=>{
-  try {
-    const product = await Product.find();
-    console.log(product)
-    return res.status(200).json(product)
-  } catch (error) {
-    return res.status(400).json({
-      error:"Product Doesn't found."
-    })
-    
-  }
-}
-
 
 export default {
   create,
@@ -234,5 +270,6 @@ export default {
   list,
   decreaseQuantity,
   increaseQuantity,
-  allProducts
+  remove,
+  update
 };

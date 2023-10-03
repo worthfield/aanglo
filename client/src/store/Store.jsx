@@ -41,7 +41,7 @@ const Store = () => {
 
   return (
     <div className="container bg-white mx-auto">
-      <div className="flex items-center rounded-lg w-full bg-gray-100 mb-2 mt-2 px-4 py-4 gap-4">
+      <div className="flex items-center md:rounded-lg w-full bg-gray-100 mb-2 mt-2 px-4 py-4 gap-4">
         <div className="logo w-[75px] h-[75px] sm:w-[100px] sm:h-[100px] rounded-full">
           <img
             src={logoUrl}
@@ -50,8 +50,8 @@ const Store = () => {
           />
         </div>
         <div className="p">
-          <p className="text-2xl md:text-3xl">{store.name}</p>
-          <p className="text-gray-400">100% positive response</p>
+          <p className="text-base font-medium md:text-xl ">{store.name}</p>
+          <p className="text-gray-400 text-sm">100% positive response</p>
         </div>
       </div>
 

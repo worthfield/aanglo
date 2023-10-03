@@ -1,9 +1,16 @@
 import React from 'react'
+import { Navigate, useLocation } from 'react-router-dom'
+import Products from './Products';
 
 const Searches = () => {
-  return (
-    <div>Searches</div>
-  )
+  const location = useLocation();
+  if(location?.state?.results){
+
+    return (
+      <Products products={location?.state?.results} searched={false} />
+    )
+  }
+  return <Navigate to={'/'}/>
 }
 
 export default Searches

@@ -1,10 +1,13 @@
-import React,{useState,useEffect} from 'react'
+import React,{useState,useEffect, useContext} from 'react'
 import { Outlet } from 'react-router-dom'
 import Menu from '../container/Menu';
 import Footer from '../components/Footer'
 import { IoIosArrowUp } from "react-icons/io";
+import { MyContext } from '../Context-api';
 
 const Layout = () => {
+  const {toggle} =useContext(MyContext)
+
   const [scrollToTop, setscrollToTop] = useState(false);
 
   useEffect(() => {
@@ -25,6 +28,8 @@ const Layout = () => {
   return (
     <div className='w-full h-full relative'>
         <Menu/>
+        <div className={toggle?'bg-black opacity-5':'opacity-100'}>
+
         <Outlet/>
         {scrollToTop && (
         <button
@@ -39,6 +44,8 @@ const Layout = () => {
       )}
 
         <Footer/>
+        </div>
+
     </div>
   )
 }

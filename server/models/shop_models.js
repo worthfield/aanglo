@@ -1,15 +1,13 @@
 import mongoose, { Schema } from 'mongoose'
 import slugify from 'slugify'
+import Product from "./product_models.js";
+
 
 const shopSchema = new Schema({
     name:{
         type:String,
         trim:true,
         required:[true,"Name is required"]
-    },
-    slug:{
-        type:String,
-        unique:true
     },
     description:{
         type:String,
@@ -29,8 +27,6 @@ const shopSchema = new Schema({
         default:Date.now
     }
 })
-shopSchema.pre('save',function(next){
-    this.slug=slugify(this.name,{lower:true,strict:true,replacement:'-'})
-    next()
-})
+
+  
 export default mongoose.model('Shop',shopSchema)

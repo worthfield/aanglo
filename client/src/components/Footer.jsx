@@ -29,7 +29,7 @@ const Footer = () => {
         </div>
         <div className="w-full sm:w-1/2 md:w-1/4 px-4 mb-6">
           <h4 className="text-lg font-bold mb-3">Contact Us</h4>
-          <p className="text-sm">123 Main Street, City, Country</p>
+          <p className="text-sm">18 Main Street, Biratnagar, Nepal</p>
           <p className="text-sm">info@example.com</p>
           <p className="text-sm">Phone: 123-456-7890</p>
         </div>

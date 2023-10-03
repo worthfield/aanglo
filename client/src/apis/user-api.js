@@ -1,8 +1,9 @@
 import axios from "axios";
-const apiUrl = "https://aanglo.onrender.com";
+// const apiUrl = "https://aanglo.onrender.com";
+const apiUrl = "http://localhost:8080";
 const create = async (user) => {
   try {
-    let response = await axios.post(`${apiUrl}/api/users`, user);
+    let response = await axios.post(`/api/users`, user);
     return response.data;
   } catch (error) {
     throw error;
@@ -10,7 +11,7 @@ const create = async (user) => {
 };
 const verify = async (user) => {
   try {
-    let response = await axios.post(`${apiUrl}/api/users/verify`, user);
+    let response = await axios.post(`/api/users/verify`, user);
     return response.data;
   } catch (error) {
     throw error;
@@ -19,7 +20,7 @@ const verify = async (user) => {
 
 const list = async () => {
   try {
-    let response = await axios.get(`${apiUrl}/api/users`);
+    let response = await axios.get(`/api/users`);
     return response.data;
   } catch (error) {
     throw error;
@@ -28,7 +29,7 @@ const list = async () => {
 
 const read = async (params, credentials) => {
   try {
-    let response = await axios.get(`${apiUrl}/api/users/${params.userId}`, {
+    let response = await axios.get(`/api/users/${params.userId}`, {
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
@@ -41,29 +42,32 @@ const read = async (params, credentials) => {
   }
 };
 
-const update = async (params,credentials, user) => {
+const update = async (params, credentials, user) => {
   try {
-    let response = await axios.put(`${apiUrl}/api/users/${params.userId}`, user,{
-      headers:{
-        Accept:"application/json",
-        Authorization:"Bearer "+ credentials.t
-
+    let response = await axios.put(
+      `/api/users/${params.userId}`,
+      user,
+      {
+        headers: {
+          Accept: "application/json",
+          Authorization: "Bearer " + credentials.t,
+        },
       }
-    });
+    );
     return response.data;
   } catch (error) {
     throw error;
   }
 };
 
-const remove = async (params,credentials) => {
+const remove = async (params, credentials) => {
   try {
-    let response = await axios.delete(`${apiUrl}/api/users/${params.userId}`,{
-      headers:{
-        Accept:"application/json",
-        'Content-Type':'application/json',
-        'Authorization':'Bearer '+ credentials.t
-      }
+    let response = await axios.delete(`/api/users/${params.userId}`, {
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + credentials.t,
+      },
     });
     return response.data;
   } catch (error) {

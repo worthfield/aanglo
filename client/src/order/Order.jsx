@@ -4,6 +4,7 @@ import { Link, useParams } from "react-router-dom";
 import { read } from "../apis/order-api";
 import auth from "../authentication/auth-helper";
 import Loading from "../components/Loading";
+import { AiOutlineArrowLeft } from "react-icons/ai";
 const Order = () => {
   const params = useParams();
   const [order, setOrder] = useState({ products: [], delivery_address: {} });
@@ -11,7 +12,7 @@ const Order = () => {
 
   const jwt = auth.isAuthenticated();
   useEffect(() => {
-    setLoading(true)
+    setLoading(true);
     fetchOrder();
 
     return () => {};
@@ -20,24 +21,23 @@ const Order = () => {
     try {
       const data = await read({ orderId: params.orderId }, { t: jwt.token });
       setOrder(data);
-      setLoading(false)
+      setLoading(false);
     } catch (error) {
       console.log(error);
-      setLoading(false)
+      setLoading(false);
     }
   };
-  if(loading){
-    return <Loading/>
+  if (loading) {
+    return <Loading />;
   }
   const getTotal = () => {
     return order.products.reduce((a, b) => {
-       const quantity = b.status == "Cancelled" ? 0 : b.quantity
-        return a + (quantity*b.product.price)
-    }, 0)
-  }
+      const quantity = b.status == "Cancelled" ? 0 : b.quantity;
+      return a + quantity * b.product.price;
+    }, 0);
+  };
   return (
     <div>
-      <Link to={".."}>Back</Link>
       <div className="h-[194px] relative">
         <img className="w-full h-full object-cover object-center" src={hero} />
         <p className="absolute top-1/2 left-1/2 w-full text-center sm:text-2xl md:text-3xl lg:text-4xl transform -translate-x-1/2 -translate-y-1/2 text-white text-xl font-bold">
@@ -45,6 +45,7 @@ const Order = () => {
         </p>
       </div>
       <div className="container mt-[30px] mx-auto">
+        <Link  className="flex items-center gap-2 mb-2" to={".."}> <AiOutlineArrowLeft/>Back</Link>
         <div className="bg-white p-4 shadow-md">
           <p className="text-base text-gray-500">
             Order Code: <strong>{order._id}</strong> <br />
@@ -95,8 +96,7 @@ const Order = () => {
               ))}
               <div className="text-right">
                 <p className="text-lg font-semibold text-green-600">
-                  Total:
-                  Rs.{getTotal()}
+                  Total: Rs.{getTotal()}
                 </p>
               </div>
             </div>

@@ -26,7 +26,7 @@ const Cart = () => {
         </p>
       </div>
       <div className="container mt-[24px] mx-auto">
-        <p className="md:text-2xl text-xl font-bold">Shopping Cart</p>
+        {/* <p className="md:text-2xl text-xl font-bold">Shopping Cart</p> */}
         <CartItems checkout={checkout} setCheckout={showCheckout} />
         {checkout && <Checkout isOpen={isOpen} onClose={closeDialog} />}
       </div>

@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext,useState } from "react";
 import { MyContext } from "../../Context-api";
 import logo from "../../assets/images/ecom.png";
 import { Link, NavLink } from "react-router-dom";
@@ -7,19 +7,21 @@ import { BsSearch } from "react-icons/bs";
 import { AiFillHeart } from "react-icons/ai";
 import { FaShoppingBag, FaBars } from "react-icons/fa";
 import cart from "../../apis/cart-api";
+import ResSearch from "./ResSearch";
 
 const MiddleBar = () => {
-  const { toggle, setToggle,getItemCount} = useContext(MyContext);
+  const { toggle, setToggle,getItemCount,hide,sethide} = useContext(MyContext);
   const loggedIn = auth.isAuthenticated();
   return (
+    <>
     <div className="container mt-3 mb-3  mx-auto flex items-center justify-between">
-      <div className="w-[200px]">
+      <Link to={'.'} className="w-[200px]">
         <img
           src={logo}
           alt="aanglo.png"
           className="w-full h-full object-cover object-center"
         />
-      </div>
+      </Link>
       <div className="hidden items-center text-black font-semibold text-lg font-sans gap-6 lg:flex ">
         <NavLink
           to={"."}
@@ -49,15 +51,7 @@ const MiddleBar = () => {
             My shop
           </NavLink>
         )}
-        <NavLink
-          style={({ isActive }) => {
-            return { color: isActive ? "red" : "inherit" };
-          }}
-          to={"product"}
-          className="hover:text-red-500"
-        >
-          Products
-        </NavLink>
+       
         <NavLink className="hover:text-red-500">Contact</NavLink>
       </div>
       <div className="hidden items-center gap-6 lg:flex">
@@ -75,7 +69,7 @@ const MiddleBar = () => {
         </Link>
       </div>
       <div className="flex items-center gap-4 lg:hidden sm:gap-10">
-        <div>
+        <div onClick={()=>sethide(false)}>
           <BsSearch size={24} />
         </div>
         <Link to={"cart"} className="relative">
@@ -90,7 +84,10 @@ const MiddleBar = () => {
           <FaBars size={24} />
         </div>
       </div>
+      
     </div>
+      {!hide&&(<ResSearch/>)}
+      </>
   );
 };
 

@@ -1,9 +1,10 @@
 import axios from "axios";
-const apiUrl = "https://aanglo.onrender.com";
+// const apiUrl = "https://aanglo.onrender.com";
+const apiUrl = "http://localhost:8080";
 const create = async (params, credentials, order) => {
   try {
     const response = await axios.post(
-      `${apiUrl}/api/orders/${params.userId}`,
+      `/api/orders/${params.userId}`,
       { order: order },
       {
         headers: {
@@ -21,7 +22,7 @@ const create = async (params, credentials, order) => {
 const listByShop = async (params, credentials) => {
   try {
     const response = await axios.get(
-      `${apiUrl}/api/orders/shop/${params.shopId}`,
+      `/api/orders/shop/${params.shopId}`,
       {
         headers: {
           Accept: "application/json",
@@ -37,7 +38,7 @@ const listByShop = async (params, credentials) => {
 
 const getStatusValues = async () => {
   try {
-    let response = await axios.get(`${apiUrl}/api/order/status_values`);
+    let response = await axios.get(`/api/order/status_values`);
     return response.data;
   } catch (err) {
     throw err;
@@ -47,7 +48,7 @@ const getStatusValues = async () => {
 const update = async (params, credentials, product) => {
   try {
     let response = await axios.put(
-      `${apiUrl}/api/order/status/${params.shopId}`,
+      `/api/order/status/${params.shopId}`,
       product,
       {
         headers: {
@@ -66,7 +67,7 @@ const update = async (params, credentials, product) => {
 const cancelProduct = async (params, credentials, product) => {
   try {
     let response = await axios.put(
-      `${apiUrl}/api/order/${params.shopId}/cancel/${params.productId}`,
+      `/api/order/${params.shopId}/cancel/${params.productId}`,
       product,
       {
         headers: {
@@ -84,7 +85,7 @@ const cancelProduct = async (params, credentials, product) => {
 const processCharge = async (params, credentials, product) => {
   try {
     let response = await axios.put(
-      `${apiUrl}/api/order/${params.orderId}/charge/${params.userId}/${params.shopId}`,
+      `/api/order/${params.orderId}/charge/${params.userId}/${params.shopId}`,
       product,
       {
         headers: {
@@ -103,7 +104,7 @@ const processCharge = async (params, credentials, product) => {
 const listByUser = async (params, credentials) => {
   try {
     const response = await axios.get(
-      `${apiUrl}/api/orders/user/${params.userId}`,
+      `/api/orders/user/${params.userId}`,
       {
         headers: {
           Accept: "application/json",
@@ -118,7 +119,7 @@ const listByUser = async (params, credentials) => {
 };
 const read = async (params, credentials) => {
   try {
-    const response = await axios.get(`${apiUrl}/api/order/${params.orderId}`, {
+    const response = await axios.get(`/api/order/${params.orderId}`, {
       headers: {
         Accept: "application/json",
         Authorization: "Bearer " + credentials.t,

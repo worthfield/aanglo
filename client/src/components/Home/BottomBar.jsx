@@ -1,12 +1,20 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { CgMenuGridO } from "react-icons/cg";
 import { AiFillCaretDown } from "react-icons/ai";
 import { BsSearch } from "react-icons/bs";
-import { listCategories } from "../../apis/product-api";
+import { useNavigate } from "react-router-dom";
+import { list, listCategories } from "../../apis/product-api";
 
 const BottomBar = () => {
   const [toggleDown, setToggleDown] = useState(false);
   const [categories, setCategories] = useState([]);
+  const [values, setValues] = useState({
+    searches: "",
+    category: "All",
+    results: [],
+    searched: false
+  });
+  const navigate = useNavigate();
   useEffect(() => {
     fetchCategory();
   }, []);
@@ -18,6 +26,43 @@ const BottomBar = () => {
       console.log(error);
     }
   };
+  const handleChange = (event) => {
+    setValues({ ...values, searches: event.target.value });
+  };
+
+  const handleCategoryChange = (event) => {
+    setValues({ ...values, category: event.target.value });
+  };
+  const handleSearch = async () => {
+    if (values.searches) {
+      try {
+        const data = await list({
+          search: values.searches || undefined,
+          category: values.category,
+        });
+        setValues({ ...values, results: data, searched: true });
+        navigate('/search', { state: { results: data } })
+
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  };
+  const handleCategory = async(category)=>{
+    try{
+      const data = await list({
+        category:category
+      })
+      setValues({...values,results:data,searched:true});
+      navigate('/search',{state:{results:data}})
+    }
+    catch(error){
+
+      console.log(category)
+    }
+
+  }
+
   return (
     <div className="container mx-auto hidden mt-2 mb-4 gap-10  lg:flex">
       <div className="relative">
@@ -38,13 +83,12 @@ const BottomBar = () => {
         </div>
         {toggleDown && (
           <div className="bg-white w-full border-b-2 rounded-b-md absolute z-50">
-            {categories.map((category,index)=>{
+            {categories.map((category, index) => {
               return (
-                
-                  <div key={index}  className="border-b-2 border-dashed p-3">{category}</div>
-
-               
-              )
+                <div key={index} onClick={()=>handleCategory(category)} className="border-b-2 cursor-pointer border-dashed p-3">
+                  {category}
+                </div>
+              );
             })}
           </div>
         )}
@@ -53,16 +97,34 @@ const BottomBar = () => {
         <input
           type="text"
           placeholder="Search here..."
+          onChange={handleChange}
+          value={values.searches}
           className="w-full focus:outline-none text-gray-500 focus:text-black"
         />
         <div className=" flex items-center">
-          <select className="mx-2 text-gray-500  focus:text-black focus:outline-none">
-            <option>All categories</option>
-            <option>anish</option>
-            <option>anish</option>
+          <select
+            value={values.category}
+            onChange={handleCategoryChange}
+            className="mx-2 text-gray-500  focus:text-black focus:outline-none"
+          >
+            <option value={"All"}>All categories</option>
+            {categories.map((option, index) => {
+              return (
+                <option
+                  key={index}
+                  value={option}
+                  className="border-b-2 border-dashed p-3"
+                >
+                  {option}
+                </option>
+              );
+            })}
           </select>
 
-          <div className="px-10 py-3 cursor-pointer border-l-2">
+          <div
+            className="px-10 py-3 cursor-pointer border-l-2"
+            onClick={handleSearch}
+          >
             <BsSearch size={24} />
           </div>
         </div>

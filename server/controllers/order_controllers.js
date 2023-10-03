@@ -53,7 +53,7 @@ const orderByID = async (req, res, next, id) => {
       .populate("products.shop", "name")
       .exec();
     if (!order)
-      return res.status("400").json({
+      return res.status(400).json({
         error: "Order not found",
       });
     req.order = order;

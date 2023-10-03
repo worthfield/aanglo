@@ -3,10 +3,11 @@ import Shop from "../models/shop_models.js";
 import fs from "fs";
 import errorMessage from "../handlers/dbErrorHandler.js";
 import path from "path";
-import extend from 'lodash/extend.js'
+import extend from "lodash/extend.js";
 
 import { fileURLToPath } from "url";
 import { dirname } from "path";
+import Product from "../models/product_models.js";
 
 const currentFilePath = fileURLToPath(import.meta.url);
 const currentDir = dirname(currentFilePath);
@@ -29,34 +30,31 @@ const create = (req, res) => {
     if (files.photo) {
       const imageFormat = files.photo.mimetype; // Get the image format
       // Check the image format
-      if (imageFormat !== 'image/jpg' && imageFormat !== 'image/jpeg' && imageFormat !== 'image/png') {
+      if (
+        imageFormat !== "image/jpg" &&
+        imageFormat !== "image/jpeg" &&
+        imageFormat !== "image/png"
+      ) {
         return res.status(400).json({
-          error: "Invalid image format. Only JPEG and PNG formats are supported.",
+          error:
+            "Invalid image format. Only JPEG and PNG formats are supported.",
         });
       }
       shop.photo.data = fs.readFileSync(files.photo.filepath);
       shop.photo.contentType = files.photo.mimetype;
     }
-    try{
-
+    try {
       await shop.save();
       return res.status(200).json({
-        message:"Successfully register."
-      })
+        message: "Successfully register.",
+      });
+    } catch (err) {
+      return res.status(400).json({
+        error: errorMessage(err),
+      });
     }
-    catch(err){
-      return res.status(400).json(
-        {
-          error:errorMessage(err)
-        }
-      )
-    }
-
- 
   });
 };
-
-
 
 const shopByID = async (req, res, next, id) => {
   try {
@@ -74,88 +72,85 @@ const shopByID = async (req, res, next, id) => {
   }
 };
 
-
-const list = async(req,res)=>{
-  try{
+const list = async (req, res) => {
+  try {
     let shops = await Shop.find();
-    res.json(shops)
-  }
-  catch(err){
+    res.json(shops);
+  } catch (err) {
     return res.status(400).json({
-      error:errorMessage(err)
-    })
+      error: errorMessage(err),
+    });
   }
-}
+};
 
-const listByOwner = async(req,res)=>{
-  try{
-    let shops = await Shop.find({owner:req.profile._id}).populate('owner','_id name')
-    res.json(shops)
-  }
-  catch(err){
+const listByOwner = async (req, res) => {
+  try {
+    let shops = await Shop.find({ owner: req.profile._id }).populate(
+      "owner",
+      "_id name"
+    );
+    res.json(shops);
+  } catch (err) {
     return res.status(400).json({
-      error:errorMessage(err)
-    })
+      error: errorMessage(err),
+    });
   }
-}
+};
 
-const read = (req,res)=>{
-  req.shop.photo = undefined
-  return res.json(req.shop)
-}
+const read = (req, res) => {
+  req.shop.photo = undefined;
+  return res.json(req.shop);
+};
 
-const update = (req,res)=>{
+const update = (req, res) => {
   let form = new formidable.IncomingForm();
-  form.keepExtensions=true
-  form.parse(req,async(err,fields,files)=>{
-    if(err){
+  form.keepExtensions = true;
+  form.parse(req, async (err, fields, files) => {
+    if (err) {
       res.status(400).json({
-        message:"Photo could not be uploaded"
-      })
+        message: "Photo could not be uploaded",
+      });
     }
     let shop = req.shop;
-    shop = extend(shop,fields)
-    shop.updated = Date.now()
-    if(files.photo){
-      shop.photo.data = fs.readFileSync(files.photo.filepath)
-      shop.photo.contentType = files.photo.mimetype
+    shop = extend(shop, fields);
+    shop.updated = Date.now();
+    if (files.photo) {
+      shop.photo.data = fs.readFileSync(files.photo.filepath);
+      shop.photo.contentType = files.photo.mimetype;
     }
-    try{
+    try {
       let result = await shop.save();
-      res.json(result)
-    }
-    catch(err){
+      res.json(result);
+    } catch (err) {
       return res.status(400).json({
-        error:errorMessage(err)
-      })
+        error: errorMessage(err),
+      });
     }
-  })
+  });
+};
 
-}
-
-const isOwner = async(req,res,next)=>{
+const isOwner = async (req, res, next) => {
   const isOwner = req.shop && req.auth && req.shop.owner._id == req.auth._id;
-  if(!isOwner){
+  if (!isOwner) {
     return res.status(403).json({
-      error:"User is not authorized."
-    })
+      error: "User is not authorized.",
+    });
   }
-  next()
-
-}
+  next();
+};
 
 const remove = async (req, res) => {
   try {
-    let shop = req.shop
-    let deletedShop = shop.remove()
-    res.json(deletedShop)
+    let shop = req.shop;
+    await Product.deleteMany({ shop: shop._id });
+    let deletedShop = await shop.deleteOne();
+    res.json(deletedShop);
   } catch (err) {
     return res.status(400).json({
-      error: errorHandler.getErrorMessage(err)
-    })
-  }  
-}
-
+      error: errorMessage(err),
+    });
+  }
+};
 
 const photo = (req, res, next) => {
   if (req.shop.photo.data) {
@@ -168,4 +163,15 @@ const defaultPhoto = (req, res) => {
   return res.sendFile(profileImage);
 };
 
-export default { create, shopByID, photo, defaultPhoto,list,listByOwner,read,update,isOwner, remove };
+export default {
+  create,
+  shopByID,
+  photo,
+  defaultPhoto,
+  list,
+  listByOwner,
+  read,
+  update,
+  isOwner,
+  remove,
+};

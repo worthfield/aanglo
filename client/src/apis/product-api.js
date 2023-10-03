@@ -1,10 +1,11 @@
 import axios from "axios";
 import queryString from "query-string";
-const apiUrl = "https://aanglo.onrender.com";
+// const apiUrl = "https://aanglo.onrender.com";
+const apiUrl = "http://localhost:8080";
 const create = async (params, credentials, product) => {
   try {
     const response = await axios.post(
-      `${apiUrl}/api/products/by/${params.shopId}`,
+      `/api/products/by/${params.shopId}`,
       product,
       {
         headers: {
@@ -20,7 +21,7 @@ const create = async (params, credentials, product) => {
 };
 const listByShop = async (params) => {
   try {
-    const response = await axios.get(`${apiUrl}/api/products/by/${params.shopId}`);
+    const response = await axios.get(`/api/products/by/${params.shopId}`);
     return response.data;
   } catch (error) {
     throw error;
@@ -28,7 +29,7 @@ const listByShop = async (params) => {
 };
 const listLatest = async () => {
   try {
-    const response = await axios.get(`${apiUrl}/api/products/latest`);
+    const response = await axios.get(`/api/products/latest`);
     return response.data;
   } catch (error) {
     throw error;
@@ -37,7 +38,7 @@ const listLatest = async () => {
 const listRelated = async (params) => {
   try {
     const response = await axios.get(
-      `${apiUrl}/api/products/related/${params.productId}`
+      `/api/products/related/${params.productId}`
     );
     return response.data;
   } catch (error) {
@@ -46,7 +47,7 @@ const listRelated = async (params) => {
 };
 const read = async (params) => {
   try {
-    const response = await axios.get(`${apiUrl}/api/products/${params.productId}`);
+    const response = await axios.get(`/api/products/${params.productId}`);
     return response.data;
   } catch (error) {
     throw error;
@@ -55,7 +56,7 @@ const read = async (params) => {
 const list = async (params) => {
   try {
     const query = queryString.stringify(params);
-    const response = await axios.get(`${apiUrl}/api/products?${query}`);
+    const response = await axios.get(`/api/products?${query}`);
     return response.data;
   } catch (error) {
     throw error;
@@ -64,16 +65,41 @@ const list = async (params) => {
 
 const listCategories = async () => {
   try {
-    let response = await axios.get(`${apiUrl}/api/products/categories`);
+    let response = await axios.get(`/api/products/categories`);
     return response.data;
   } catch (error) {
     throw error;
   }
 };
 
-const allProducts = async () => {
+const remove = async (params, credentials) => {
   try {
-    let response = await axios.get(`${apiUrl}/api/allproducts`);
+    let response = await axios.delete(
+      `/api/product/${params.shopId}/${params.productId}`,
+      {
+        headers: {
+          Accept: "application/json",
+          Authorization: "Bearer " + credentials.t,
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+const update = async (params, credentials, product) => {
+  try {
+    const response = await axios.put(
+      `/api/product/${params.shopId}/${params.productId}`,
+      product,
+      {
+        headers: {
+          Accept: "application/json",
+          Authorization: "Bearer " + credentials.t,
+        },
+      }
+    );
     return response.data;
   } catch (error) {
     throw error;
@@ -88,5 +114,6 @@ export {
   read,
   list,
   listCategories,
-  allProducts,
+  remove,
+  update,
 };

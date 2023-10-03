@@ -39,7 +39,8 @@ const Shops = () => {
           Shops
         </p>
       </div>
-      <div className="container mx-auto mb-5 mt-12">
+      <div className="sm:container sm:mx-auto mb-5 mx-3">
+        
         <p className="font-bold text-lg italic mt-[16px] mb-[16px]">
           {shops?.length > 0 && "ALL SHOPS"}
         </p>
